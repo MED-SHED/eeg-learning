@@ -1,7 +1,11 @@
 [core]
-    remote = medshed
+    remote = medshed_azure
     autostage = true
 ['remote "medshed"']
     url = azure://medshedeegwinstack/dvc-cache
 ['remote "azure"']
     url = azure://dvc-cache/eeg-pipeline
+['remote "medshed_azure"']
+    url = azure://artifacts/dvc-store
+    account_name = learningartifacts
+    account_key = <azure_secret>
