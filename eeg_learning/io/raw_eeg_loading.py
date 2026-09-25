@@ -6,7 +6,7 @@ from pathlib import Path
 
 import mne
 import numpy as np
-from braindecode.datasets import BaseConcatDataset, TUH, TUHAbnormal
+from braindecode.datasets import BaseConcatDataset, TUH, TUHAbnormal as _BraindecodeTUHAbnormal
 from braindecode.preprocessing import Preprocessor, exponential_moving_standardize, preprocess
 
 from eeg_learning.io.labeling import relabel
@@ -16,6 +16,22 @@ from eeg_learning.tools.filters import (
     select_by_duration,
     exclude_by_undefined_pathology,
 )
+
+
+class TUHAbnormal(_BraindecodeTUHAbnormal):
+    """Load TUAB v3 paths whose files sit directly under the reference folder."""
+
+    @staticmethod
+    def _parse_additional_description_from_file_path(file_path):
+        parts = Path(file_path).parts
+        version = next((part for part in parts if part.startswith("v") and part.count(".") == 2), None)
+        if version is None:
+            raise ValueError(f"Could not find a TUAB version in path: {file_path}")
+        return {
+            "version": version,
+            "train": "train" in parts,
+            "pathological": "abnormal" in parts,
+        }
 
 
 def custom_crop(raw, tmin=0.0, tmax=None, include_tmax=True):

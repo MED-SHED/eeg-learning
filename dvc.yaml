@@ -28,7 +28,7 @@ stages:
   evaluate:
     cmd: uv run python -m eeg_learning.pipeline.evaluate
     deps:
-      - .\target\saved_windows
+      - target/saved_windows
       - target/saved_models/window_model
     params:
       - eeg_learning/config/params.toml:

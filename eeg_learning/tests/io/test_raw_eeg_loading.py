@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from unittest.mock import MagicMock, patch
 
-from eeg_learning.io.raw_eeg_loading import RawEEGLoader, custom_crop
+from eeg_learning.io.raw_eeg_loading import RawEEGLoader, TUHAbnormal, custom_crop
 
 
 class TestCustomCrop:
@@ -38,6 +38,15 @@ class TestDefaults:
         assert loader.n_tuab == 5
         assert loader.use_tueg is True
         assert loader.n_jobs == 4
+
+
+class TestTUABPathParsing:
+    def test_parses_official_v3_flat_path(self):
+        result = TUHAbnormal._parse_additional_description_from_file_path(
+            "/data/TUAB/v3.0.1/edf/eval/abnormal/01_tcp_ar/aaaaabdo_s003_t000.edf"
+        )
+
+        assert result == {"version": "v3.0.1", "train": False, "pathological": True}
 
 
 class TestLoad:

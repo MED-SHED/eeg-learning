@@ -163,7 +163,7 @@ stages:
   evaluate:
     cmd: uv run python -m eeg_learning.pipeline.evaluate
     deps:
-    - path: .\target\saved_windows
+    - path: target/saved_windows
       hash: md5
       md5: 77a11aff4e217b11dda0b09802406dee.dir
       size: 26358566777
