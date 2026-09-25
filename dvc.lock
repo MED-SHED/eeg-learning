@@ -7,11 +7,11 @@ stages:
         data:
           use_tuab: true
           use_tueg: false
-          n_tuab: 2993
+          n_tuab: 23
           n_tueg: 50
-          n_load: 100
+          n_load: 1
           preload: false
-          tuab_path: E:/TUAB
+          tuab_path: ./data/TUAB/
           tueg_path: ''
           load_saved_recordings: false
           save_recordings: true
@@ -39,6 +39,8 @@ stages:
           azure_artifact_root: 
             wasbs://mlflow-artifacts@medshedeegwinstack.blob.core.windows.net/experiments
           experiment_name: eeg_learning
+          mlflow_tracking_uri: mlruns
+          mlflow_required: true
         windowing:
           window_len_s: 60
           multiple: 0
@@ -68,9 +70,9 @@ stages:
     outs:
     - path: target/saved_windows
       hash: md5
-      md5: 77a11aff4e217b11dda0b09802406dee.dir
-      size: 26358566777
-      nfiles: 11972
+      md5: 22ad3cf3fc1bc85171846a8c2b8a9d8a.dir
+      size: 204504284
+      nfiles: 138
   train:
     cmd: uv run python -m eeg_learning.pipeline.train
     deps:

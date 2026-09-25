@@ -107,6 +107,13 @@ class RawEEGLoader:
         relabel_dataset: list | None = None,
     ) -> BaseConcatDataset:
         """Apply duration, label, and channel filters to a dataset."""
+        # braindecode's TUH reader strips the "EEG " prefix from channel names
+        restore = {c[len("EEG ") :]: c for c in channels if c.startswith("EEG ")}
+        for d in recordings.datasets:
+            present = {old: new for old, new in restore.items() if old in d.raw.ch_names}
+            if present:
+                d.raw.rename_channels(present)
+
         recordings = select_by_duration(recordings, tmin, tmax)
 
         if relabel_label:
