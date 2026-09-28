@@ -39,6 +39,18 @@ def custom_crop(raw, tmin=0.0, tmax=None, include_tmax=True):
     raw.crop(tmin=tmin, tmax=tmax, include_tmax=include_tmax)
 
 
+# MNE's FIF writer rejects meas_date outside a 32-bit second range. A handful of
+# TUAB recordings carry a corrupted/placeholder device date (e.g. ~1899) that falls
+# just outside it, which otherwise crashes preprocessing with a RuntimeError.
+_FIF_MEAS_DATE_SECONDS = range(-2147483648, 2147483647 + 1)
+
+
+def sanitize_meas_date(raw):
+    meas_date = raw.info["meas_date"]
+    if meas_date is not None and int(meas_date.timestamp()) not in _FIF_MEAS_DATE_SECONDS:
+        raw.set_meas_date(None)
+
+
 class RawEEGLoader:
     """Loads TUAB/TUEG EDF recordings, preprocesses them, and saves as BrainVision.
 
@@ -142,6 +154,7 @@ class RawEEGLoader:
     ) -> BaseConcatDataset:
         """Resample, crop, scale, clip, and optionally filter/standardise recordings."""
         preprocessors = [
+            Preprocessor(sanitize_meas_date, apply_on_array=False),
             Preprocessor("pick_types", eeg=True, meg=False, stim=False),
             *([Preprocessor("pick_channels", ch_names=channels, ordered=True)] if channels else []),
             Preprocessor(fn="resample", sfreq=sampling_freq),

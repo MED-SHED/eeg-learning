@@ -21,7 +21,7 @@ console = true
 [data]
 use_tuab = true
 use_tueg = false
-n_tuab = 23
+n_tuab = 300
 n_tueg = 50
 n_load = 1
 preload = false
