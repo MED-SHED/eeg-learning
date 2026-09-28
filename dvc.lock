@@ -40,7 +40,7 @@ stages:
             wasbs://mlflow-artifacts@medshedeegwinstack.blob.core.windows.net/experiments
           experiment_name: eeg_learning
           mlflow_tracking_uri: mlruns
-          mlflow_required: true
+          mlflow_required: false
         windowing:
           window_len_s: 60
           multiple: 0
@@ -78,13 +78,13 @@ stages:
     deps:
     - path: ./target/saved_windows
       hash: md5
-      md5: 77a11aff4e217b11dda0b09802406dee.dir
-      size: 26358566777
-      nfiles: 11972
+      md5: 22ad3cf3fc1bc85171846a8c2b8a9d8a.dir
+      size: 204504284
+      nfiles: 138
     params:
       eeg_learning/config/params.toml:
         model:
-          name: tcn
+          name: deep4
           final_conv_length: auto
           dropout: 0.1
           deep4:
@@ -139,8 +139,10 @@ stages:
           azure_artifact_root: 
             wasbs://mlflow-artifacts@medshedeegwinstack.blob.core.windows.net/experiments
           experiment_name: eeg_learning
+          mlflow_tracking_uri: mlruns
+          mlflow_required: false
         split:
-          split_way: folder
+          split_way: proportion
           train_size: 0.8
           valid_size: 0.1
           test_size: 0.1
@@ -159,9 +161,9 @@ stages:
     outs:
     - path: target/saved_models/window_model
       hash: md5
-      md5: 4459bd0a818a80e3095247fea6717d1e.dir
-      size: 1268046
-      nfiles: 1
+      md5: 7e886e848de132b475d852a4b1b35453.dir
+      size: 2451704
+      nfiles: 3
   evaluate:
     cmd: uv run python -m eeg_learning.pipeline.evaluate
     deps:
