@@ -68,7 +68,6 @@ class Deep4Net(AbstractModel):
             first_pool_mode=deep4_first_pool_mode,
             later_pool_mode=deep4_later_pool_mode,
             drop_prob=drop_prob,
-            double_time_convs=False,
             split_first_layer=True,
             batch_norm=True,
             batch_norm_alpha=0.1,

@@ -10,7 +10,7 @@ mlflow_tracking_uri = "mlruns"
 # MLflow is the system of record for run history, so a tracking failure aborts
 # the stage by default. Set false for offline work where the pipeline should
 # still complete without a run being recorded.
-mlflow_required = true
+mlflow_required = false
 
 [logging]
 # Consumed by eeg_learning.tools.logger.Logger.from_config

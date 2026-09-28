@@ -54,6 +54,15 @@ name = "pytorch-cpu"
 url = "https://download.pytorch.org/whl/cpu"
 explicit = true
 
+# braindecode -> product-key-memory -> colt5-attention -> local-attention pulls
+# versions that call the deprecated torch.cuda.amp.autocast at import time.
+# Force the fixed releases (torch.amp.autocast) instead of suppressing the warning.
+[tool.uv]
+override-dependencies = [
+  "local-attention>=1.11.2",
+  "colt5-attention>=0.11.2",
+]
+
 [tool.uv.sources]
 torch = { index = "pytorch-cpu" }
 torchvision = { index = "pytorch-cpu" }
