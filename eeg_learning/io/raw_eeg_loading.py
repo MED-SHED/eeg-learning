@@ -155,8 +155,8 @@ class RawEEGLoader:
         """Resample, crop, scale, clip, and optionally filter/standardise recordings."""
         preprocessors = [
             Preprocessor(sanitize_meas_date, apply_on_array=False),
-            Preprocessor("pick_types", eeg=True, meg=False, stim=False),
-            *([Preprocessor("pick_channels", ch_names=channels, ordered=True)] if channels else []),
+            Preprocessor("pick", picks="eeg", exclude="bads"),
+            *([Preprocessor("pick", picks=channels)] if channels else []),
             Preprocessor(fn="resample", sfreq=sampling_freq),
             Preprocessor(
                 custom_crop,
