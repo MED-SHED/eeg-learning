@@ -21,7 +21,7 @@ console = true
 [data]
 use_tuab = true
 use_tueg = false
-n_tuab = 300
+n_tuab = 2993
 n_tueg = 50
 n_load = 1
 preload = false
@@ -34,7 +34,7 @@ load_saved_windows = false
 save_windows = true
 save_windows_path = "./target/saved_windows"
 relabel_datasets = ""
-relabel_labels = "./data/relabel_labels.csv"
+relabel_labels = ""
 
 [preprocessing]
 bandpass_filter = false

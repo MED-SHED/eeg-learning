@@ -7,7 +7,7 @@ stages:
         data:
           use_tuab: true
           use_tueg: false
-          n_tuab: 23
+          n_tuab: 2993
           n_tueg: 50
           n_load: 1
           preload: false
@@ -20,7 +20,7 @@ stages:
           save_windows: true
           save_windows_path: ./target/saved_windows
           relabel_datasets: ''
-          relabel_labels: ./data/relabel_labels.csv
+          relabel_labels: ''
         preprocessing:
           bandpass_filter: false
           low_cut_hz: 4.0
@@ -70,17 +70,17 @@ stages:
     outs:
     - path: target/saved_windows
       hash: md5
-      md5: 22ad3cf3fc1bc85171846a8c2b8a9d8a.dir
-      size: 204504284
-      nfiles: 138
+      md5: b8a1f510121d74ab9d0159e5816aa3d1.dir
+      size: 26367068979
+      nfiles: 17958
   train:
     cmd: uv run python -m eeg_learning.pipeline.train
     deps:
     - path: ./target/saved_windows
       hash: md5
-      md5: 22ad3cf3fc1bc85171846a8c2b8a9d8a.dir
-      size: 204504284
-      nfiles: 138
+      md5: b8a1f510121d74ab9d0159e5816aa3d1.dir
+      size: 26367068979
+      nfiles: 17958
     params:
       eeg_learning/config/params.toml:
         model:
@@ -142,7 +142,7 @@ stages:
           mlflow_tracking_uri: mlruns
           mlflow_required: false
         split:
-          split_way: proportion
+          split_way: folder
           train_size: 0.8
           valid_size: 0.1
           test_size: 0.1
@@ -161,26 +161,26 @@ stages:
     outs:
     - path: target/saved_models/window_model
       hash: md5
-      md5: 7e886e848de132b475d852a4b1b35453.dir
-      size: 2451704
-      nfiles: 3
+      md5: 29396dbece405cb6bb5f23f2b544664b.dir
+      size: 1225943
+      nfiles: 2
   evaluate:
     cmd: uv run python -m eeg_learning.pipeline.evaluate
     deps:
-    - path: target/saved_windows
-      hash: md5
-      md5: 77a11aff4e217b11dda0b09802406dee.dir
-      size: 26358566777
-      nfiles: 11972
     - path: target/saved_models/window_model
       hash: md5
-      md5: 4459bd0a818a80e3095247fea6717d1e.dir
-      size: 1268046
-      nfiles: 1
+      md5: 29396dbece405cb6bb5f23f2b544664b.dir
+      size: 1225943
+      nfiles: 2
+    - path: target/saved_windows
+      hash: md5
+      md5: b8a1f510121d74ab9d0159e5816aa3d1.dir
+      size: 26367068979
+      nfiles: 17958
     params:
       eeg_learning/config/params.toml:
         model:
-          name: tcn
+          name: deep4
           final_conv_length: auto
           dropout: 0.1
           deep4:
@@ -226,6 +226,7 @@ stages:
             heads: 16
             mlp_dim: 64
             emb_dropout: 0.1
+        output.saved_models_path: ./target/saved_models/window_model
         output.training_detail_path: ./target/training_detail
         run:
           mne_log_level: WARNING
@@ -236,6 +237,8 @@ stages:
           azure_artifact_root: 
             wasbs://mlflow-artifacts@medshedeegwinstack.blob.core.windows.net/experiments
           experiment_name: eeg_learning
+          mlflow_tracking_uri: mlruns
+          mlflow_required: false
         split:
           split_way: folder
           train_size: 0.8
@@ -245,20 +248,25 @@ stages:
     outs:
     - path: metrics.json
       hash: md5
-      md5: f15650917ce629bd1e5758aad440d39b
-      size: 137
+      md5: f8cf0fb06b9caebae6656892249b2156
+      size: 132
     - path: target/training_detail
       hash: md5
-      md5: 44ce6d913b3565c7f8a8caf1bdcd0e34.dir
-      size: 3034264
+      md5: 35e1904b260e2d6aa2b24de7dff4759c.dir
+      size: 2812585
       nfiles: 5
   decision:
     cmd: uv run python -m eeg_learning.pipeline.decision
     deps:
+    - path: target/saved_models/window_model
+      hash: md5
+      md5: 29396dbece405cb6bb5f23f2b544664b.dir
+      size: 1225943
+      nfiles: 2
     - path: target/training_detail
       hash: md5
-      md5: 44ce6d913b3565c7f8a8caf1bdcd0e34.dir
-      size: 3034264
+      md5: 35e1904b260e2d6aa2b24de7dff4759c.dir
+      size: 2812585
       nfiles: 5
     params:
       eeg_learning/config/params.toml:
@@ -301,6 +309,7 @@ stages:
             n_jobs: -1
             random_state: 87
         output.decision_models_path: ./target/saved_models/decision_model
+        output.saved_models_path: ./target/saved_models/window_model
         run:
           mne_log_level: WARNING
           n_repetitions: 1
@@ -310,17 +319,15 @@ stages:
           azure_artifact_root: 
             wasbs://mlflow-artifacts@medshedeegwinstack.blob.core.windows.net/experiments
           experiment_name: eeg_learning
+          mlflow_tracking_uri: mlruns
+          mlflow_required: false
     outs:
     - path: target/decision_metrics.json
       hash: md5
-      md5: 0ee0314e657c5f22ae923709c672263e
-      size: 144
-    - path: target/decision_results.csv
-      hash: md5
-      md5: 099bf06869df5429d824031af52a1c2d
-      size: 720
+      md5: 986922e5f5b65849da7d8a9e3f7fffd0
+      size: 141
     - path: target/saved_models/decision_model
       hash: md5
-      md5: ac8b10313f8ff86e96c6cc083c1e27c6.dir
-      size: 2812
+      md5: 65213f89ff7293f2be451d91dbe93cf8.dir
+      size: 3223
       nfiles: 2
