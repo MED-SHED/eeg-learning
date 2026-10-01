@@ -84,7 +84,7 @@ stages:
     params:
       eeg_learning/config/params.toml:
         model:
-          name: deep4
+          name: tcn
           final_conv_length: auto
           dropout: 0.1
           deep4:
@@ -162,11 +162,16 @@ stages:
     - path: target/saved_models/window_model
       hash: md5
 <<<<<<< HEAD
+<<<<<<< HEAD
       md5: 29396dbece405cb6bb5f23f2b544664b.dir
 =======
       md5: 69a25ecfdff2ef0ca14111b9c7814e23.dir
 >>>>>>> dc9bb12 (Running deep4 vm8)
       size: 1225943
+=======
+      md5: 9c549993459ff151876289eb96fcbcae.dir
+      size: 1268745
+>>>>>>> a42de0f (TCN run with 8 cores)
       nfiles: 2
   evaluate:
     cmd: uv run python -m eeg_learning.pipeline.evaluate
@@ -174,11 +179,16 @@ stages:
     - path: target/saved_models/window_model
       hash: md5
 <<<<<<< HEAD
+<<<<<<< HEAD
       md5: 29396dbece405cb6bb5f23f2b544664b.dir
 =======
       md5: 69a25ecfdff2ef0ca14111b9c7814e23.dir
 >>>>>>> dc9bb12 (Running deep4 vm8)
       size: 1225943
+=======
+      md5: 9c549993459ff151876289eb96fcbcae.dir
+      size: 1268745
+>>>>>>> a42de0f (TCN run with 8 cores)
       nfiles: 2
     - path: target/saved_windows
       hash: md5
@@ -188,7 +198,7 @@ stages:
     params:
       eeg_learning/config/params.toml:
         model:
-          name: deep4
+          name: tcn
           final_conv_length: auto
           dropout: 0.1
           deep4:
@@ -257,6 +267,7 @@ stages:
     - path: metrics.json
       hash: md5
 <<<<<<< HEAD
+<<<<<<< HEAD
       md5: f8cf0fb06b9caebae6656892249b2156
       size: 132
     - path: target/training_detail
@@ -271,12 +282,21 @@ stages:
       md5: 9eb33267a2da683ef97f6dda2c159e10.dir
       size: 2808196
 >>>>>>> dc9bb12 (Running deep4 vm8)
+=======
+      md5: e0e4e259a1825a8c3860aa5f8e74a246
+      size: 130
+    - path: target/training_detail
+      hash: md5
+      md5: 353720f8e808c0946192a544f4b1ec52.dir
+      size: 2817032
+>>>>>>> a42de0f (TCN run with 8 cores)
       nfiles: 5
   decision:
     cmd: uv run python -m eeg_learning.pipeline.decision
     deps:
     - path: target/saved_models/window_model
       hash: md5
+<<<<<<< HEAD
 <<<<<<< HEAD
       md5: 29396dbece405cb6bb5f23f2b544664b.dir
 =======
@@ -293,6 +313,15 @@ stages:
       md5: 9eb33267a2da683ef97f6dda2c159e10.dir
       size: 2808196
 >>>>>>> dc9bb12 (Running deep4 vm8)
+=======
+      md5: 9c549993459ff151876289eb96fcbcae.dir
+      size: 1268745
+      nfiles: 2
+    - path: target/training_detail
+      hash: md5
+      md5: 353720f8e808c0946192a544f4b1ec52.dir
+      size: 2817032
+>>>>>>> a42de0f (TCN run with 8 cores)
       nfiles: 5
     params:
       eeg_learning/config/params.toml:
@@ -354,6 +383,6 @@ stages:
       size: 141
     - path: target/saved_models/decision_model
       hash: md5
-      md5: c9212e927f43c0946eb8adac20132dfc.dir
-      size: 3223
+      md5: 7cdf3938a2c0704ef494d275597d9d64.dir
+      size: 3222
       nfiles: 2
