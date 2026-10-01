@@ -8,4 +8,4 @@
 ['remote "medshed_azure"']
     url = azure://artifacts/dvc-store
     account_name = learningartifacts
-    account_key = CTOYnWZ4d99pqbXkmc/70a1yMcasdGMsnm7HicAO+dgmBz3SRY1O55Q/EpueckJ8snxyew4Qa22o+AStusfxEQ==
+    account_key = <secret>
